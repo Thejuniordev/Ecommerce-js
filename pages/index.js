@@ -1,5 +1,6 @@
-import commerce from '../lib/commerce';
 import * as React from 'react'
+import commerce from '../lib/commerce';
+import ProductList from '../components/ProductList'
 
 export async function getStaticProps() {
     const merchant = await commerce.merchants.about()
@@ -20,7 +21,7 @@ export default function IndexPage({merchant, categories, products}) {
         <React.Fragment>
             <pre>{JSON.stringify(merchant, null, 2)}</pre>
             <pre>{JSON.stringify(categories, null, 2)}</pre>
-            <pre>{JSON.stringify(products, null, 2)}</pre>
+            <ProductList products={products} />
         </React.Fragment>
     )
 }  
