@@ -1,55 +1,54 @@
-import { createContext, useContext, useEffect } from 'react';
-import { useReducer } from 'react/cjs/react.development';
+import { createContext, useReducer, useContext, useEffect } from "react";
 
-import commerce from '../lib/commerce';
+import commerce from "../lib/commerce";
 
-const CartStateContext = createContext()
-const CartDispatchContext = createContext()
+const CartStateContext = createContext();
+const CartDispatchContext = createContext();
 
 const SET_CART = "SET_CART";
 
 const initialState = {
-    total_items: 0,
-    total_unique_items: 0,
-    line_items: []
-}
-
-const reducer = (state, action) => {
-    switch(action.type) {
-        case SET_CART:
-            return{ ...state, ...action.payload };
-        default:
-            throw new Error(`Unknown action: ${action.type}`);
-    }
+  total_items: 0,
+  total_unique_items: 0,
+  line_items: [],
 };
 
-export const CartProvider = ({children}) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+const reducer = (state, action) => {
+  switch (action.type) {
+    case SET_CART:
+      return { ...state, ...action.payload };
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+};
 
-    useEffect(() => {
-        getCart();
-    }, []);
+export const CartProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-    const setCart = (payload) => dispatch({ type: SET_CART, payload: cart});
+  useEffect(() => {
+    getCart();
+  }, []);
 
-    const getCart = async () => {
-        try {
-            const cart = await commerce.cart.retrieve()
+  const setCart = (payload) => dispatch({ type: SET_CART, payload });
 
-            setCart(cart)
-        } catch (err) {
-            console.log(err)
-        }
+  const getCart = async () => {
+    try {
+      const cart = await commerce.cart.retrieve();
+
+      setCart(cart);
+    } catch (err) {
+      console.log(err);
     }
+  };
 
-     return (
-         <CartDispatchContext.Provider value={{setCart}}>
-             <CartStateContext.Provider value={state}>
-                 {children}
-             </CartStateContext.Provider>
-         </CartDispatchContext.Provider>
-     )
-}
+  return (
+    <CartDispatchContext.Provider value={{ setCart }}>
+      <CartStateContext.Provider value={state}>
+        {children}
+      </CartStateContext.Provider>
+    </CartDispatchContext.Provider>
+  );
+};
 
-export const useCartState = () => useContext(CartStateContext)
-export const useCartDispatch = () => useContext(CartStateContext)
+export const useCartState = () => useContext(CartStateContext);
+export const useCartDispatch = () => useContext(CartDispatchContext);
