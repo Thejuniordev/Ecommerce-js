@@ -1,3 +1,4 @@
+import * as React from 'react';
 import commerce from '../../lib/commerce';
 
 export async function getStaticProps({params}) {
@@ -31,7 +32,7 @@ export default function ProductPage({product}) {
     return (
         <React.Fragment>
             <h1>{product.name}</h1>
-            <p>{product.proce.formatted_with_symbol}</p>
+            <p>{product.price.formatted_with_symbol}</p>
         </React.Fragment>
     )
 }
