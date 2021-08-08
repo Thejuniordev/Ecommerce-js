@@ -1,5 +1,6 @@
 import * as React from 'react'
 import commerce from '../lib/commerce';
+import CategoryList from '../components/CategoryList'
 import ProductList from '../components/ProductList'
 
 export async function getStaticProps() {
@@ -19,8 +20,8 @@ export async function getStaticProps() {
 export default function IndexPage({merchant, categories, products}) {
     return (
         <React.Fragment>
-            <pre>{JSON.stringify(merchant, null, 2)}</pre>
-            <pre>{JSON.stringify(categories, null, 2)}</pre>
+            <h1>{merchant.business_name}</h1>
+            <CategoryList categories={categories} />
             <ProductList products={products} />
         </React.Fragment>
     )
